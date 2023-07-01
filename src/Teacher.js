@@ -24,11 +24,16 @@ function Teacher() {
     }
   };
 
-  let deleteTeacherData = () => {
-    let deleteData = window.confirm("Are you sure to delete?");
-    if (deleteData) {
-      alert("Deleted !!");
-    }
+  let deleteTeacherData = async(userId)  => {
+    try{
+      const confirm = window.confirm("Do you want to delete this Profile?");
+      if(confirm){
+        const deleteTeacherData=await axios.delete(`https://648bb8e117f1536d65eb270d.mockapi.io/Teacher/${userId}`)
+        alert("Deleted successfully");
+        teacherData();
+      }  }catch (error) {
+        alert("Error in deleting");
+      }
   };
   return (
     <main>
@@ -107,9 +112,8 @@ function Teacher() {
                             Edit
                           </Link>
                           <button
-                            onClick={() => {
-                              deleteTeacherData();
-                            }}
+                            onClick={() => deleteTeacherData(item.id)
+                            }
                             type="button"
                             className="btn btn-outline-danger my-1"
                           >

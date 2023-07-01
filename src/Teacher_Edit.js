@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function Teacher_Edit() {
+  const params=useParams();
+  const [teacher, setTeacher] = useState([]);
   const navigate=useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -66,18 +68,46 @@ function Teacher_Edit() {
     },
     onSubmit: async (values) => {
       try {
-        let teacherData = await axios.post(
-          "https://648bb8e117f1536d65eb270d.mockapi.io/Teacher",
+        let teacherData = await axios.put(
+          `https://648bb8e117f1536d65eb270d.mockapi.io/Teacher/${params.id}`,
           values
         );
         console.log(teacherData);
+        if (teacherData) {
         alert("Teacher Data Added Successfully!!");
         navigate('/teachers_data')
+        }
       } catch (error) {
         alert("Error!! Data not Added");
       }
     },
   });
+  let fetchData = async () => {
+    try {
+      let teacherData=await axios.get(
+        `https://648bb8e117f1536d65eb270d.mockapi.io/Teacher/${params.id}`
+      );
+      console.log(teacherData.data);
+      const teacher=teacherData.data;
+      setTeacher({ ...teacher});
+      formik.setValues({
+        name: teacher.name,
+        email: teacher.email,
+        teacherId: teacher.teacherId,
+        joiningdate:teacher.joiningdate,
+        gender: teacher.gender,
+        dob: teacher.dob,
+        dept: teacher.dept,
+        phone: teacher.phone,
+        experience: teacher.experience,
+      });
+    } catch (error) {
+      alert("Error");
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="container-fluid px-4">
       <h1 className="mt-4 mb-4">Teacher - Data Edit Form</h1>
