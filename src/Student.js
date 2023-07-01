@@ -57,10 +57,10 @@ function Student() {
                 <thead>
                   <tr>
                     <th scope="col">#ID</th>
-                    <th scope="col">ADMISSION NO.</th>
+                    <th scope="col">ADMISSION NUMBER</th>
                     <th scope="col">STUDENT NAME</th>
                     <th scope="col">CLASS</th>
-                    <th scope="col">FATHER NAME</th>
+                    <th scope="col">FATHER'S NAME</th>
                     <th scope="col">DOB</th>
                     <th scope="col">GENDER</th>
                     <th scope="col">PHONE NO.</th>
@@ -70,10 +70,10 @@ function Student() {
                 <tfoot>
                 <tr>
                     <th scope="col">#ID</th>
-                    <th scope="col">ADMISSION NO.</th>
+                    <th scope="col">ADMISSION NUMBER</th>
                     <th scope="col">STUDENT NAME</th>
                     <th scope="col">CLASS</th>
-                    <th scope="col">FATHER NAME</th>
+                    <th scope="col">FATHER'S NAME</th>
                     <th scope="col">DOB</th>
                     <th scope="col">GENDER</th>
                     <th scope="col">PHONE NO.</th>

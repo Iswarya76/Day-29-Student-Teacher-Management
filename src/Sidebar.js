@@ -6,13 +6,6 @@ function Sidebar() {
     <nav className="sb-sidenav accordion bg-dark" id="sidenavAccordion">
       <div className="sb-sidenav-menu">
         <div className="nav">
-          <div className="sb-sidenav-menu-heading text-white">Core</div>
-          <Link to={"/dashboard"} className="nav-link" href="index.html">
-            <div className="sb-nav-link-icon">
-              <i className="fas fa-tachometer-alt"></i>
-            </div>
-            Dashboard
-          </Link>
           <div className="sb-sidenav-menu-heading text-white">Interface</div>
           <Link
             className="nav-link collapsed"
@@ -26,8 +19,7 @@ function Sidebar() {
               <i className="fas fa-columns"></i>
             </div>
             Teachers
-            <div className="sb-sidenav-collapse-arrow">
-            </div>
+            <div className="sb-sidenav-collapse-arrow"></div>
           </Link>
 
           <Link

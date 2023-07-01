@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useFormik } from 'formik'
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Create_Student() {
+  const navigate=useNavigate();
     const formik=useFormik({
         initialValues: {
             studentName: "",
@@ -13,6 +14,8 @@ function Create_Student() {
             fatherName: "",
             gender: "",
             phone: "",
+            rank:"",
+            place:"",
           },
           validate: (values) => {
             let error = {};
@@ -23,7 +26,7 @@ function Create_Student() {
               values.studentName.length < 3 ||
               values.studentName.length > 15
             ) {
-              error.studentName = "Character must between 3 to 15";
+              error.studentName = "Name must be 3 to 15 characters";
             }
       
             if (!values.admissionNo) {
@@ -49,7 +52,7 @@ function Create_Student() {
               values.fatherName.length < 3 ||
               values.fatherName.length > 15
             ) {
-              error.fatherName = "Character must between 3 to 15";
+              error.fatherName = "Characters must between 3 to 15";
             }
       
             if (!values.gender) {
@@ -59,16 +62,22 @@ function Create_Student() {
             if (!values.phone) {
               error.phone = "*Required";
             } else if (values.phone.toString().length !== 10) {
-              error.phone = "Invalid Mobile No.";
+              error.phone = "Invalid phone number";
             }
-      
+            if (!values.rank) {
+              error.rank = "*Required";
+            }
+            if (!values.place) {
+              error.place = "*Required";
+            }
             return error;
           },
           onSubmit: async(values)=>{
             try{
-                let studentdata=await axios.post("https://648bb8e117f1536d65eb270d.mockapi.io/Student")
+                let studentdata=await axios.post("https://648bb8e117f1536d65eb270d.mockapi.io/Student",values)
                 console.log(studentdata);
         alert("Student Data Added Successfully !!");
+        navigate('/students_data')
       } catch (error) {
         alert("Error, Please check it!!");
       }
@@ -77,15 +86,16 @@ function Create_Student() {
     })
   return (
     <div className="container-fluid px-4">
+      <form onSubmit={formik.handleSubmit}>
         <h1 className="mt-4 mb-4">Student Creation Form</h1>
         <div className="row">
-          <div className="col-lg-6">
+          <div className="col-lg-4">
             <div className="mb-3">
               <label for="formGroupExampleStudent" className="form-label">
                 Student Name<span style={{ color: "red" }}>*</span>:
               </label>
               <input
-                type="text"
+                type="name"
                 name="studentName"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -107,13 +117,13 @@ function Create_Student() {
               ) : null}
             </div>
           </div>
-          <div className="col-lg-6">
+          <div className="col-lg-4">
             <div className="mb-3">
               <label for="formGroupExampleFather" className="form-label">
                 Father Name<span style={{ color: "red" }}>*</span>:
               </label>
               <input
-                type="text"
+                type="name"
                 name="fatherName"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -136,7 +146,7 @@ function Create_Student() {
           <div className="col-lg-4">
             <div className="mb-3">
               <label for="formGroupExampleAdmission" className="form-label">
-                Admission No<span style={{ color: "red" }}>*</span>:
+                Admission Number<span style={{ color: "red" }}>*</span>:
               </label>
               <input
                 type="number"
@@ -163,7 +173,7 @@ function Create_Student() {
           <div className="col-lg-4">
             <div className="mb-3">
               <label for="formGroupExampleDOB" className="form-label">
-                DOB<span style={{ color: "red" }}>*</span>:
+                Date of Birth<span style={{ color: "red" }}>*</span>:
               </label>
               <input
                 type="date"
@@ -171,10 +181,13 @@ function Create_Student() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.dob}
-                className="form-control"
-                id="formGroupExampleDOB"
+                className={`form-control ${
+                  formik.errors.dob ? "error-box" : ""
+                }${
+                  formik.touched.dob && !formik.errors.dob ? "success-box" : ""
+                }`}
               />
-              {formik.errors.dob ? (
+               {formik.touched.dob && formik.errors.dob ? (
                 <span style={{ color: "red" }}>{formik.errors.dob}</span>
               ) : null}
             </div>
@@ -201,14 +214,14 @@ function Create_Student() {
           </div>
           <div className="col-md-4">
             <label for="inputClass" className="form-label">
-              className<span style={{ color: "red" }}>*</span>:
+              Class<span style={{ color: "red" }}>*</span>:
             </label>
             <select
               id="inputClass"
               name="class"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.className}
+              value={formik.values.class}
               className="form-select"
             >
               <option selected>Choose...</option>
@@ -248,10 +261,56 @@ function Create_Student() {
               ) : null}
             </div>
           </div>
+          <div className="col-lg-4">
+            <div className="mb-3">
+              <label for="formGroupExamplePhone" className="form-label">
+                Rank<span style={{ color: "red" }}>*</span>:
+              </label>
+              <input
+                type="number"
+                name="rank"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.rank}
+                className={`form-control ${
+                  formik.errors.rank ? "error-box" : ""
+                } ${
+                  formik.touched.rank && !formik.errors.rank
+                    ? "success-box"
+                    : ""
+                }`}
+                id="formGroupExamplePhone"
+              />
+              {formik.errors.rank ? (
+                <span style={{ color: "red" }}>{formik.errors.rank}</span>
+              ) : null}
+            </div>
+          </div>
+          <div className="col-md-4">
+            <label for="inputClass" className="form-label">
+              Place<span style={{ color: "red" }}>*</span>:
+            </label>
+            <select
+              id="inputClass"
+              name="place"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.place}
+              className="form-select"
+            >
+              <option selected>Choose...</option>
+              <option>Chennai</option>
+              <option>Dindigul</option>
+              <option>Madurai</option>
+              <option>Natham</option>
+            </select>
+            {formik.errors.place ? (
+              <span style={{ color: "red" }}>{formik.errors.place}</span>
+            ) : null}
+          </div>
           <div className="col-lg-6">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
+          <div className="form-group">
+              <input type={"submit"} className="btn btn-primary"></input>
             <Link
               to={"/students_data"}
               type="button"
@@ -261,6 +320,8 @@ function Create_Student() {
             </Link>
               </div>
               </div>
+              </div>
+              </form>
     </div>
   )
 }

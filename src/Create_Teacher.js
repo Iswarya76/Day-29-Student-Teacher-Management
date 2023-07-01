@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import React from "react";
 
 function Create_Teacher() {
+  const navigate=useNavigate();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -13,6 +14,8 @@ function Create_Teacher() {
       joiningdate: "",
       phone: "",
       teacherId: "",
+      experience:"",
+      dob:"",
     },
     validate: (values) => {
       let error = {};
@@ -21,7 +24,7 @@ function Create_Teacher() {
         error.name = "*Required";
       }
       if (values.name && (values.name.length < 3 || values.name.length > 15)) {
-        error.name = "name must be 3 to 15 characters";
+        error.name = "Name must be 3 to 15 characters";
       }
 
       if (!values.dept) {
@@ -47,11 +50,17 @@ function Create_Teacher() {
       if (!values.phone) {
         error.phone = "*Required";
       } else if (values.phone.toString().length !== 10) {
-        error.phone = "Invalid Phone number";
+        error.phone = "Invalid phone number";
       }
 
       if (!values.teacherId) {
         error.teacherId = "*Required";
+      }
+      if (!values.experience) {
+        error.rank = "*Required";
+      }
+      if (!values.dob) {
+        error.dob = "*Required";
       }
       return error;
     },
@@ -62,7 +71,8 @@ function Create_Teacher() {
           values
         );
         console.log(teacherData);
-        alert("Data Added Successfully!!");
+        alert("Teacher Data Added Successfully!!");
+        navigate('/teachers_data')
       } catch (error) {
         alert("Error!! Data not Added");
       }
@@ -73,13 +83,13 @@ function Create_Teacher() {
       <h1 className="mt-4 mb-4">Teacher - Data Creation Form</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className="row">
-          <div className="col-lg-6">
+          <div className="col-lg-4">
             <div className="mb-3">
               <label for="exampleFormControlInput1" className="form-label">
                 Teacher Name<span style={{ color: "red" }}>*</span>:
               </label>
               <input
-                type="text"
+                type="name"
                 name="name"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -97,7 +107,7 @@ function Create_Teacher() {
               ) : null}
             </div>
           </div>
-          <div className="col-lg-6">
+          <div className="col-lg-4">
             <div className="mb-3">
               <label for="exampleFormControlInput1" className="form-label">
                 Email<span style={{ color: "red" }}>*</span>:
@@ -107,7 +117,7 @@ function Create_Teacher() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
-                type="text"
+                type="email"
                 className={`form-control ${
                   formik.touched.email && formik.errors.email ? "error-box" : ""
                 } ${
@@ -133,9 +143,9 @@ function Create_Teacher() {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.teacherId}
-                type="text"
+                type="number"
                 className={`form-control ${
-                  formik.touched.email && formik.errors.teacherId
+                  formik.touched.teacherId && formik.errors.teacherId
                     ? "error-box"
                     : ""
                 } ${
@@ -206,7 +216,7 @@ function Create_Teacher() {
               <option>English</option>
               <option>Maths</option>
               <option>Science</option>
-              <option>Socialscience</option>
+              <option>Social science</option>
             </select>
             {formik.errors.dept ? (
               <span style={{ color: "red" }}>{formik.errors.name}</span>
@@ -237,10 +247,56 @@ function Create_Teacher() {
               ) : null}
             </div>
           </div>
-          <div className="col-lg-6">
-            <button type="submit" className="btn btn-primary mt-1">
-              Submit
-            </button>
+          <div className="col-lg-4">
+            <div className="mb-3">
+              <label for="formGroupExampleDOB" className="form-label">
+                Date of Birth<span style={{ color: "red" }}>*</span>:
+              </label>
+              <input
+                type="date"
+                name="dob"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.dob}
+                className="form-control"
+                id="formGroupExampleDOB"
+              />
+              {formik.errors.dob ? (
+                <span style={{ color: "red" }}>{formik.errors.dob}</span>
+              ) : null}
+            </div>
+          </div>
+          <div className="col-lg-4">
+            <div className="mb-3">
+              <label for="exampleFormControlInput1" className="form-label">
+                Total Experience in Years<span style={{ color: "red" }}>*</span>:
+              </label>
+              <input
+                name="experience"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.experience}
+                type="number"
+                className={`form-control ${
+                  formik.touched.experience && formik.errors.experience
+                    ? "error-box"
+                    : ""
+                } ${
+                  formik.touched.experience && !formik.errors.experience
+                    ? "success-box"
+                    : ""
+                }`}
+                id="exampleFormControlInput1"
+              />
+              {formik.touched.teacherId && formik.errors.teacherId ? (
+                <span style={{ color: "red" }}>{formik.errors.teacherId}</span>
+              ) : null}
+            </div>
+          </div>
+          <div className="col-lg-4">
+          <div className="mb-3">
+             <div className="form-group">
+              <input type={"submit"} className="btn btn-primary"></input>
             <Link
               to={"/teachers_data"}
               type="button"
@@ -248,6 +304,8 @@ function Create_Teacher() {
             >
               Back
             </Link>
+          </div>
+          </div>
           </div>
         </div>
       </form>

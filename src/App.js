@@ -2,7 +2,6 @@ import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./Login";
-import Dashboard from "./Dashboard";
 import Student from "./Student";
 import Create_Student from "./Create_Student";
 import Student_Edit from "./Student_Edit";
@@ -24,7 +23,6 @@ function App() {
         <Route path="/" element={<Login />}></Route>
         <Route path="/portal" element={<Portal_Layout />}></Route>
         <Route path="welcome" element={<Welcome_Portal />} />
-        <Route path="dashboard" element={<Dashboard />} />
         <Route path="students_data" element={<Student />} />
         <Route path="students_create" element={<Create_Student />} />
         <Route path="students_profile/:id" element={<Student_Profile />} />
